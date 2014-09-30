@@ -158,10 +158,8 @@
                             '<treeitem ng-if="nodeExpanded()"></treeitem>' +
                             '</li>' +
                             '</ul>';
-
-                    return {
-                        template: $compile(template)
-                    }
+                    
+                    this.template = $compile(template);
                 }],
                 compile: function(element, attrs, childTranscludeFn) {
                     return function ( scope, element, attrs, treemodelCntr ) {
