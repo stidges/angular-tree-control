@@ -55,6 +55,29 @@
                         return angular.equals(a, b);
                     }
 
+                    function defaultExpandedNodes(nodes, depth) {
+                        var expandedNodes = [];
+                        var nodeChildren = $scope.options.nodeChildren;
+
+                        depth = depth || 1;
+                        nodes = nodes || $scope.treeModel;
+
+                        if (depth > $scope.options.expandLevel) return expandedNodes;
+
+                        depth++;
+
+                        for (var i = 0, len = nodes.length; i < len; i++) {
+                            if (!defaultIsLeaf(nodes[i])) {
+                                expandedNodes.push(nodes[i]);
+                                expandedNodes = expandedNodes.concat(
+                                    defaultExpandedNodes(nodes[i][nodeChildren], depth)
+                                );
+                            }
+                        }
+
+                        return expandedNodes;
+                    }
+
                     $scope.options = $scope.options || {};
                     ensureDefault($scope.options, "nodeChildren", "children");
                     ensureDefault($scope.options, "dirSelectable", "true");
@@ -69,8 +92,9 @@
                     ensureDefault($scope.options.injectClasses, "labelSelected", "");
                     ensureDefault($scope.options, "equality", defaultEquality);
                     ensureDefault($scope.options, "isLeaf", defaultIsLeaf);
+                    ensureDefault($scope.options, "expandLevel", 2);
 
-                    $scope.expandedNodes = $scope.expandedNodes || [];
+                    $scope.expandedNodes = $scope.expandedNodes || defaultExpandedNodes();
                     $scope.expandedNodesMap = {};
                     for (var i=0; i < $scope.expandedNodes.length; i++) {
                         $scope.expandedNodesMap[""+i] = $scope.expandedNodes[i];
