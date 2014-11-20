@@ -46,13 +46,10 @@
                     }
 
                     function defaultEquality(a, b) {
-                        if (a === undefined || b === undefined)
+                        if (!a || !b)
                             return false;
-                        a = angular.copy(a);
-                        a[$scope.options.nodeChildren] = [];
-                        b = angular.copy(b);
-                        b[$scope.options.nodeChildren] = [];
-                        return angular.equals(a, b);
+
+                        return a.$$hashKey == b.$$hashKey;
                     }
 
                     $scope.defaultExpandedNodes = function(nodes, depth) {
@@ -94,7 +91,7 @@
                     ensureDefault($scope.options, "injectClasses", {});
                     ensureDefault($scope.options.injectClasses, "ul", "");
                     ensureDefault($scope.options.injectClasses, "li", "");
-                    ensureDefault($scope.options.injectClasses, "liSelected", "");
+                    ensureDefault($scope.options.injectClasses, "liSelected", "tree-selected");
                     ensureDefault($scope.options.injectClasses, "iExpanded", "");
                     ensureDefault($scope.options.injectClasses, "iCollapsed", "");
                     ensureDefault($scope.options.injectClasses, "iLeaf", "");
