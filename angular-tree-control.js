@@ -55,14 +55,20 @@
                         return angular.equals(a, b);
                     }
 
-                    function defaultExpandedNodes(nodes, depth) {
+                    $scope.defaultExpandedNodes = function(nodes, depth) {
                         var expandedNodes = [];
                         var nodeChildren = $scope.options.nodeChildren;
 
                         depth = depth || 1;
                         nodes = nodes || $scope.treeModel;
 
-                        if (depth > $scope.options.expandLevel) return expandedNodes;
+                        if (!nodes.length && !defaultIsLeaf(nodes)) {
+                            nodes = nodes[nodeChildren];
+                        }
+
+                        if (depth > $scope.options.expandLevel || !nodes.length) {
+                            return expandedNodes;
+                        }
 
                         depth++;
 
@@ -70,7 +76,7 @@
                             if (!defaultIsLeaf(nodes[i])) {
                                 expandedNodes.push(nodes[i]);
                                 expandedNodes = expandedNodes.concat(
-                                    defaultExpandedNodes(nodes[i][nodeChildren], depth)
+                                    $scope.defaultExpandedNodes(nodes[i][nodeChildren], depth)
                                 );
                             }
                         }
@@ -94,7 +100,7 @@
                     ensureDefault($scope.options, "isLeaf", defaultIsLeaf);
                     ensureDefault($scope.options, "expandLevel", 2);
 
-                    $scope.expandedNodes = $scope.expandedNodes || defaultExpandedNodes();
+                    $scope.expandedNodes = $scope.expandedNodes || $scope.defaultExpandedNodes();
                     $scope.expandedNodesMap = {};
                     for (var i=0; i < $scope.expandedNodes.length; i++) {
                         $scope.expandedNodesMap[""+i] = $scope.expandedNodes[i];
@@ -201,6 +207,8 @@
                                     return;
                                 scope.node = newValue;
                             }
+
+                            scope.expandedNodes = scope.defaultExpandedNodes(scope.node);
                         });
 
                         scope.$watchCollection('expandedNodes', function(newValue) {
