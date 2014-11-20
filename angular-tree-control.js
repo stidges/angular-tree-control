@@ -31,6 +31,7 @@
                     treeModel: "=",
                     selectedNode: "=?",
                     expandedNodes: "=?",
+                    expandLevel: "=?",
                     onSelection: "&",
                     onNodeToggle: "&",
                     options: "=?",
@@ -67,7 +68,7 @@
                             nodes = nodes[nodeChildren];
                         }
 
-                        if (depth > $scope.options.expandLevel || !nodes.length) {
+                        if (depth > $scope.expandLevel || !nodes.length) {
                             return expandedNodes;
                         }
 
@@ -99,8 +100,8 @@
                     ensureDefault($scope.options.injectClasses, "labelSelected", "");
                     ensureDefault($scope.options, "equality", defaultEquality);
                     ensureDefault($scope.options, "isLeaf", defaultIsLeaf);
-                    ensureDefault($scope.options, "expandLevel", 2);
 
+                    $scope.expandLevel = $scope.expandLevel || 2;
                     $scope.expandedNodes = $scope.expandedNodes || $scope.defaultExpandedNodes();
                     $scope.expandedNodesMap = {};
                     for (var i=0; i < $scope.expandedNodes.length; i++) {
