@@ -62,13 +62,16 @@
                         depth = depth || 1;
                         nodes = nodes || $scope.treeModel;
 
-
-                        if (depth > $scope.options.expandLevel || !nodes || !nodes.length) {
+                        if (nodes == null) {
                             return expandedNodes;
                         }
 
                         if (!nodes.length && !defaultIsLeaf(nodes)) {
                             nodes = nodes[nodeChildren];
+                        }
+
+                        if (depth > $scope.options.expandLevel || !nodes.length) {
+                            return expandedNodes;
                         }
 
                         depth++;
