@@ -101,7 +101,9 @@
                     ensureDefault($scope.options, "equality", defaultEquality);
                     ensureDefault($scope.options, "isLeaf", defaultIsLeaf);
 
-                    $scope.expandLevel = $scope.expandLevel || 2;
+                    if (!angular.isDefined($scope.expandLevel)) {
+                        $scope.expandLevel = 2;
+                    }
                     $scope.expandedNodes = $scope.expandedNodes || $scope.defaultExpandedNodes();
                     $scope.expandedNodesMap = {};
                     for (var i=0; i < $scope.expandedNodes.length; i++) {
