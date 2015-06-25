@@ -50,6 +50,9 @@
                         if (!a || !b)
                             return false;
 
+                        if (a.id && b.id)
+                            return a.id == b.id;
+
                         return a.$$hashKey == b.$$hashKey;
                     }
 
@@ -104,6 +107,7 @@
                     if (!angular.isDefined($scope.expandLevel)) {
                         $scope.expandLevel = 2;
                     }
+                    $scope.explicitExpandedNodes = angular.isDefined($scope.expandedNodes);
                     $scope.expandedNodes = $scope.expandedNodes || $scope.defaultExpandedNodes();
                     $scope.expandedNodesMap = {};
                     for (var i=0; i < $scope.expandedNodes.length; i++) {
@@ -212,7 +216,9 @@
                                 scope.node = newValue;
                             }
 
-                            scope.expandedNodes = scope.defaultExpandedNodes(scope.node);
+                            if (!scope.explicitExpandedNodes) {
+                                scope.expandedNodes = scope.defaultExpandedNodes(scope.node);
+                            }
                         });
 
                         scope.$watchCollection('expandedNodes', function(newValue) {
