@@ -180,10 +180,12 @@
                     $scope.selectedClass = function() {
                         var labelSelectionClass = classIfDefined($scope.options.injectClasses.labelSelected, false);
                         var injectSelectionClass = "";
-                        if (labelSelectionClass && (this.node == $scope.selectedNode))
+                        var isEqual = $scope.options.equality(this.node, $scope.selectedNode);
+
+                        if (labelSelectionClass && isEqual)
                             injectSelectionClass = " " + labelSelectionClass;
 
-                        return (this.node == $scope.selectedNode)?"tree-selected" + injectSelectionClass:"";
+                        return isEqual ? "tree-selected" + injectSelectionClass : "";
                     };
 
                     //tree template
