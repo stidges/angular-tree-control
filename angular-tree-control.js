@@ -34,6 +34,7 @@
                     expandLevel: "=?",
                     onSelection: "&",
                     onNodeToggle: "&",
+                    useHashkey: "@",
                     options: "=?",
                     orderBy: "@",
                     reverseOrder: "@",
@@ -50,8 +51,10 @@
                         if (!a || !b)
                             return false;
 
-                        if (a.id && b.id)
-                            return a.id == b.id;
+                        if (!$scope.useHashkey) {
+                            if (a.id && b.id)
+                                return a.id == b.id;
+                        }
 
                         return a.$$hashKey == b.$$hashKey;
                     }
