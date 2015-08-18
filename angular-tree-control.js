@@ -34,6 +34,7 @@
                     expandLevel: "=?",
                     onSelection: "&",
                     onNodeToggle: "&",
+                    onNodeDrag: "&?",
                     useHashkey: "@",
                     options: "=?",
                     orderBy: "@",
@@ -57,6 +58,10 @@
                         }
 
                         return a.$$hashKey == b.$$hashKey;
+                    }
+
+                    function isDraggable() {
+                        return !!$scope.onNodeDrag;
                     }
 
                     $scope.defaultExpandedNodes = function(nodes, depth) {
@@ -191,13 +196,17 @@
                         return isEqual ? "tree-selected" + injectSelectionClass : "";
                     };
 
+                    $scope.dragNode = function (node) {
+                        return $scope.onNodeDrag({ node: node });
+                    };
+
                     //tree template
                     var template =
                         '<ul '+classIfDefined($scope.options.injectClasses.ul, true)+'>' +
                             '<li ng-repeat="node in node.' + $scope.options.nodeChildren + ' | filter:filterExpression:filterComparator" ng-class="headClass(node)" '+classIfDefined($scope.options.injectClasses.li, true)+'>' +
                             '<i class="tree-branch-head" ng-class="iBranchClass()" ng-click="selectNodeHead(node)"></i>' +
                             '<i class="tree-leaf-head '+classIfDefined($scope.options.injectClasses.iLeaf, false)+'"></i>' +
-                            '<div class="tree-label '+classIfDefined($scope.options.injectClasses.label, false)+'" ng-class="selectedClass()" ng-click="selectNodeLabel(node)" tree-transclude></div>' +
+                            '<div class="tree-label '+classIfDefined($scope.options.injectClasses.label, false)+'" ng-class="selectedClass()" ng-click="selectNodeLabel(node)" ' + (isDraggable() ? 'bf-draggable="dragNode(node)" ' : '') + 'tree-transclude></div>' +
                             '<treeitem ng-if="nodeExpanded()"></treeitem>' +
                             '</li>' +
                             '</ul>';
