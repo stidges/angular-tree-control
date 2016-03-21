@@ -35,7 +35,7 @@
                     onSelection: "&",
                     onNodeToggle: "&",
                     onNodeDrag: "&?",
-                    useHashkey: "@",
+                    useHashkey: "=?",
                     options: "=?",
                     orderBy: "@",
                     reverseOrder: "@",
